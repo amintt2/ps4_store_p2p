@@ -1,0 +1,143 @@
+MIT License
+
+Copyright (c) 2024 PS4 Store P2P Project
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+================================================================================
+
+DISCLAIMER AND LEGAL NOTICE
+
+This software is intended for educational and research purposes only.
+
+IMPORTANT LEGAL CONSIDERATIONS:
+
+1. HOMEBREW SOFTWARE:
+   This application is homebrew software designed to run on modified PlayStation 4
+   consoles. Use of homebrew software may void your warranty and violate terms of
+   service with Sony Interactive Entertainment.
+
+2. COPYRIGHT COMPLIANCE:
+   Users are solely responsible for ensuring that any content downloaded, shared,
+   or distributed through this software complies with applicable copyright laws
+   and regulations in their jurisdiction.
+
+3. PEER-TO-PEER NETWORKING:
+   This software utilizes peer-to-peer networking protocols. Users should be
+   aware of the legal implications of participating in P2P networks in their
+   country or region.
+
+4. CONSOLE MODIFICATION:
+   This software requires a modified ("jailbroken") PlayStation 4 console.
+   Modifying gaming consoles may:
+   - Void manufacturer warranties
+   - Violate terms of service
+   - Result in account bans or console bans
+   - Potentially damage the console if done improperly
+
+5. CONTENT RESPONSIBILITY:
+   The developers of this software do not host, distribute, or endorse any
+   specific content. Users are entirely responsible for:
+   - The legality of content they download or share
+   - Compliance with local laws and regulations
+   - Respecting intellectual property rights
+
+6. NO WARRANTY:
+   This software is provided "as is" without any warranty. The developers
+   are not responsible for:
+   - Damage to gaming consoles
+   - Account suspensions or bans
+   - Legal consequences of software use
+   - Data loss or corruption
+   - Any other damages arising from use of this software
+
+7. EDUCATIONAL PURPOSE:
+   This project is developed for educational purposes to demonstrate:
+   - Homebrew development for gaming consoles
+   - Peer-to-peer networking implementation
+   - Cross-platform software development
+   - Open-source collaboration
+
+BY USING THIS SOFTWARE, YOU ACKNOWLEDGE THAT YOU HAVE READ, UNDERSTOOD,
+AND AGREE TO BE BOUND BY THESE TERMS AND CONDITIONS.
+
+IF YOU DO NOT AGREE WITH THESE TERMS, DO NOT USE THIS SOFTWARE.
+
+================================================================================
+
+THIRD-PARTY LICENSES
+
+This software incorporates code from several open-source projects:
+
+1. OpenOrbis PS4 Toolchain
+   - License: BSD 3-Clause License
+   - Copyright: OpenOrbis Team
+   - Website: https://github.com/OpenOrbis/OpenOrbis-PS4-Toolchain
+
+2. SDL2 (Simple DirectMedia Layer)
+   - License: zlib License
+   - Copyright: Sam Lantinga and contributors
+   - Website: https://www.libsdl.org/
+
+3. Dear ImGui
+   - License: MIT License
+   - Copyright: Omar Cornut and contributors
+   - Website: https://github.com/ocornut/imgui
+
+4. libtorrent
+   - License: BSD License
+   - Copyright: Arvid Norberg and contributors
+   - Website: https://www.libtorrent.org/
+
+5. JSON for Modern C++
+   - License: MIT License
+   - Copyright: Niels Lohmann
+   - Website: https://github.com/nlohmann/json
+
+Each of these components retains its original license terms. Please refer to
+the respective project repositories for complete license information.
+
+================================================================================
+
+CONTRIBUTION GUIDELINES
+
+Contributions to this project are welcome under the following conditions:
+
+1. All contributions must be original work or properly attributed
+2. Contributors must have the right to license their contributions under MIT
+3. Contributions should not facilitate illegal activities
+4. Code must follow the project's coding standards and guidelines
+5. All contributions are subject to review and approval by project maintainers
+
+By submitting a contribution, you agree to license your work under the same
+terms as this project.
+
+================================================================================
+
+CONTACT INFORMATION
+
+For questions about licensing or legal concerns, please contact the project
+maintainers through the official project repository.
+
+For security vulnerabilities, please follow responsible disclosure practices
+and contact the maintainers privately before public disclosure.
+
+================================================================================
+
+Last updated: 26/06/2025

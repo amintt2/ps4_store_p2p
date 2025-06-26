@@ -1,0 +1,495 @@
+# Build directories
+build/
+bin/
+obj/
+dist/
+out/
+
+# Compiled binaries
+*.elf
+*.pkg
+*.exe
+*.dll
+*.so
+*.dylib
+*.a
+*.lib
+
+# Object files
+*.o
+*.obj
+*.lo
+*.slo
+*.ko
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+*.ilk
+*.map
+*.exp
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-*
+*.code-workspace
+
+# Visual Studio
+*.vcxproj.user
+*.vcxproj.filters
+*.sln.docstates
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+Testing/
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+
+# Make
+*.d
+.depend
+
+# Dependencies
+libs/SDL2/
+libs/imgui/
+libs/libtorrent/
+libs/json/
+OpenOrbis-PS4-Toolchain/
+
+# Downloaded packages and torrents
+downloads/
+*.torrent
+*.magnet
+
+# Cache and temporary data
+cache/
+temp/
+tmp/
+*.cache
+*.log
+*.state
+
+# Configuration files with sensitive data
+config_local.ini
+secrets.ini
+*.key
+*.pem
+*.p12
+
+# Package manager files
+node_modules/
+package-lock.json
+yarn.lock
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Rust
+target/
+Cargo.lock
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+hs_err_pid*
+
+# Archives
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# nyc test coverage
+.nyc_output
+
+# Grunt intermediate storage
+.grunt
+
+# Bower dependency directory
+bower_components
+
+# node-waf configuration
+.lock-wscript
+
+# Compiled binary addons
+build/Release
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+.env.test
+
+# parcel-bundler cache
+.cache
+.parcel-cache
+
+# next.js build output
+.next
+
+# nuxt.js build output
+.nuxt
+
+# vuepress build output
+.vuepress/dist
+
+# Serverless directories
+.serverless
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# PS4 specific
+*.self
+*.sprx
+*.prx
+*.fself
+*.sfo
+*.gp4
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.orig
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Network files
+.nfs*
+
+# Temporary folders
+temp/
+tmp/
+
+# Local configuration
+local_config.ini
+dev_config.ini
+test_config.ini
+
+# Documentation build
+docs/_build/
+docs/html/
+docs/latex/
+
+# Doxygen output
+html/
+latex/
+
+# Test results
+test_results/
+*.xml
+*.junit
+
+# Profiling data
+*.prof
+*.pprof
+
+# Memory dumps
+*.dmp
+*.mdmp
+
+# Core dumps
+core
+core.*
+vgcore.*
+
+# Valgrind
+*.valgrind
+
+# Address Sanitizer
+*.asan
+
+# Thread Sanitizer
+*.tsan
+
+# Memory Sanitizer
+*.msan
+
+# UBSan
+*.ubsan
+
+# Static analysis
+*.sarif
+*.scanbuild
+
+# Fuzzing
+crash-*
+leak-*
+timeout-*
+
+# Benchmarking
+benchmark_results/
+*.bench
+
+# Local development
+.local/
+local/
+
+# Editor backups
+*~
+*.swp
+*.swo
+
+# Tags
+TAGS
+tags
+*.tags
+
+# Ctags
+.tags
+.tags_sorted_by_file
+
+# Cscope
+cscope.files
+cscope.in.out
+cscope.out
+cscope.po.out
+
+# GNU Global
+GTAGS
+GRTAGS
+GPATH
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# Vim
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+Session.vim
+.netrwhist
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Atom
+.atom/
+
+# JetBrains IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# Eclipse
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
+.project
+.classpath
+.c9/
+*.launch
+.buildpath
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# Code::Blocks
+*.cbp
+*.layout
+*.depend
+
+# Dev-C++
+*.dev
+
+# KDevelop
+*.kdev4
+.kdev4/
+
+# Qt Creator
+*.pro.user
+*.pro.user.*
+*.qbs.user
+*.qbs.user.*
+*.moc
+*.moc.cpp
+ui_*.h
+qrc_*.cpp
+Makefile*
+*build-*
+
+# Xcode
+*.xcodeproj/
+*.xcworkspace/
+xcuserdata/
+DerivedData/
+*.moved-aside
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+
+# Android Studio
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+
+# Flutter/Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+
+# Ignore specific to this project
+# Add any project-specific files to ignore here
+
+# End of .gitignore
