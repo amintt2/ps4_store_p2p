@@ -280,8 +280,6 @@ Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de 
 ## 📞 Support
 
 - **Issues GitHub** : [Signaler un bug](https://github.com/amintt2/ps4_store_p2p/issues)
-- **Discussions** : [Forum de discussion](https://github.com/amintt2/ps4_store_p2p/discussions)
-- **Discord** : [Serveur communautaire](#) (à créer)
 
 ## 🗺️ Roadmap
 
