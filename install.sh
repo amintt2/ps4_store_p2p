@@ -106,10 +106,12 @@ install_sdl2() {
         
         # Cross-compilation pour PS4
         cmake .. \
-            -DCMAKE_TOOLCHAIN_FILE=../../cmake/PS4Toolchain.cmake \
+            -DCMAKE_TOOLCHAIN_FILE="${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/PS4Toolchain.cmake" \
             -DCMAKE_BUILD_TYPE=Release \
             -DSDL_SHARED=OFF \
-            -DSDL_STATIC=ON
+            -DSDL_STATIC=ON \
+            -DSDL_TEST=OFF \
+            -DSDL_TESTS=OFF
         
         make -j$(nproc)
         cd ../../..

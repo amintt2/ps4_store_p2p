@@ -44,15 +44,22 @@ include_directories(
 
 # Configuration SDL2 pour PS4
 set(SDL2_DIR "${LIBS_DIR}/SDL2-2.28.5")
-message(STATUS "Using PS4 SDL2 at: ${SDL2_DIR}")
-if(EXISTS "${SDL2_DIR}")
+set(SDL2_BUILD_DIR "${LIBS_DIR}/SDL2")
+message(STATUS "Looking for PS4 SDL2...")
+
+# Check for pre-built SDL2 first
+if(EXISTS "${SDL2_BUILD_DIR}/build/libSDL2.a")
+    message(STATUS "Using pre-built PS4 SDL2 at: ${SDL2_BUILD_DIR}")
+    include_directories("${SDL2_BUILD_DIR}/include")
+    set(SDL2_LIBRARIES "${SDL2_BUILD_DIR}/build/libSDL2.a" "${SDL2_BUILD_DIR}/build/libSDL2main.a")
+elseif(EXISTS "${SDL2_DIR}/lib/x64/SDL2.lib")
+    message(STATUS "Using PS4 SDL2 at: ${SDL2_DIR}")
     include_directories("${SDL2_DIR}/include")
-    # Use SDL2 cmake config files
     set(CMAKE_PREFIX_PATH "${SDL2_DIR}/cmake" ${CMAKE_PREFIX_PATH})
     find_package(SDL2 REQUIRED CONFIG PATHS "${SDL2_DIR}/cmake" NO_DEFAULT_PATH)
     set(SDL2_LIBRARIES SDL2::SDL2 SDL2::SDL2main)
 else()
-    message(FATAL_ERROR "SDL2 for PS4 not found at ${SDL2_DIR}. Please install SDL2 for PS4.")
+    message(FATAL_ERROR "SDL2 for PS4 not found. Please run './install.sh --deps' to install dependencies properly.")
 endif()
 
 

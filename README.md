@@ -63,24 +63,25 @@ make
 
 ### Installation Manuelle
 
-1. **Installer OpenOrbis Toolchain**
+1. **Extraire OpenOrbis Toolchain**
    ```bash
-   git clone https://github.com/OpenOrbis/OpenOrbis-PS4-Toolchain.git
-   cd OpenOrbis-PS4-Toolchain
-   make install
+   # Utiliser le script d'extraction fourni
+   chmod +x extract_openorbis.sh
+   ./extract_openorbis.sh
+   
+   # Ou télécharger manuellement
+   wget https://github.com/OpenOrbis/OpenOrbis-PS4-Toolchain/releases/download/v0.5.2/toolchain-llvm-12.zip
+   unzip toolchain-llvm-12.zip -d OpenOrbis-PS4-Toolchain
    ```
 
-2. **Installer les dépendances**
+2. **Compiler le projet**
    ```bash
-   make deps
+   mkdir build && cd build
+   cmake ..
+   make
    ```
 
-3. **Compiler le projet**
-   ```bash
-   make ps4
-   ```
-
-4. **Créer le package PKG**
+3. **Créer le package PKG**
    ```bash
    make package
    ```
