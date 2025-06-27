@@ -5,6 +5,7 @@
 #include "p2p/torrent_manager.h"
 #include "utils/utils.h"
 
+#ifndef NO_LIBTORRENT
 #include <libtorrent/session.hpp>
 #include <libtorrent/add_torrent_params.hpp>
 #include <libtorrent/torrent_handle.hpp>
@@ -14,14 +15,17 @@
 #include <libtorrent/create_torrent.hpp>
 #include <libtorrent/file_storage.hpp>
 #include <libtorrent/bencode.hpp>
+#endif
 
 #include <fstream>
 #include <iostream>
 #include <thread>
 
 // Variables statiques
+#ifndef NO_LIBTORRENT
 std::unique_ptr<libtorrent::session> TorrentManager::s_session = nullptr;
 std::map<std::string, libtorrent::torrent_handle> TorrentManager::s_torrents;
+#endif
 std::string TorrentManager::s_download_path = "/data/ps4_store/downloads";
 std::string TorrentManager::s_state_file = "/data/ps4_store/session.state";
 
@@ -32,6 +36,7 @@ DownloadErrorCallback TorrentManager::s_error_callback = nullptr;
 int TorrentManager::initialize() {
     LOG_INFO("Initialisation du gestionnaire de torrents...");
     
+#ifndef NO_LIBTORRENT
     try {
         // Création de la session libtorrent
         libtorrent::settings_pack settings;
@@ -72,11 +77,16 @@ int TorrentManager::initialize() {
         LOG_ERROR("Erreur lors de l'initialisation du gestionnaire de torrents: " + std::string(e.what()));
         return -1;
     }
+#else
+    LOG_INFO("Gestionnaire de torrents désactivé (mode développement)");
+    return 0;
+#endif
 }
 
 void TorrentManager::cleanup() {
     LOG_INFO("Nettoyage du gestionnaire de torrents...");
     
+#ifndef NO_LIBTORRENT
     if (s_session) {
         // Sauvegarde de l'état
         saveState(s_state_file);
@@ -92,20 +102,24 @@ void TorrentManager::cleanup() {
         s_torrents.clear();
         s_session.reset();
     }
+#endif
     
     LOG_INFO("Gestionnaire de torrents nettoyé");
 }
 
 void TorrentManager::update() {
+#ifndef NO_LIBTORRENT
     if (!s_session) return;
     
     // Traitement des alertes
     processAlerts();
+#endif
 }
 
 bool TorrentManager::startDownload(const std::string& magnet_link, 
                                   const std::string& save_path,
                                   const std::string& name) {
+#ifndef NO_LIBTORRENT
     if (!s_session) {
         LOG_ERROR("Session non initialisée");
         return false;
@@ -150,6 +164,7 @@ bool TorrentManager::startDownload(const std::string& magnet_link,
 }
 
 bool TorrentManager::stopDownload(const std::string& name) {
+#ifndef NO_LIBTORRENT
     auto it = s_torrents.find(name);
     if (it == s_torrents.end()) {
         LOG_WARNING("Téléchargement non trouvé: " + name);
@@ -164,9 +179,14 @@ bool TorrentManager::stopDownload(const std::string& name) {
         LOG_ERROR("Erreur lors de l'arrêt du téléchargement: " + std::string(e.what()));
         return false;
     }
+#else
+    LOG_WARNING("Téléchargement P2P non disponible (mode développement)");
+    return false;
+#endif
 }
 
 bool TorrentManager::removeDownload(const std::string& name, bool delete_files) {
+#ifndef NO_LIBTORRENT
     auto it = s_torrents.find(name);
     if (it == s_torrents.end()) {
         LOG_WARNING("Téléchargement non trouvé: " + name);
@@ -188,9 +208,14 @@ bool TorrentManager::removeDownload(const std::string& name, bool delete_files) 
         LOG_ERROR("Erreur lors de la suppression du téléchargement: " + std::string(e.what()));
         return false;
     }
+#else
+    LOG_WARNING("Téléchargement P2P non disponible (mode développement)");
+    return false;
+#endif
 }
 
 bool TorrentManager::sharePackage(const std::string& pkg_path, const std::string& name) {
+#ifndef NO_LIBTORRENT
     if (!Utils::fileExists(pkg_path)) {
         LOG_ERROR("Fichier PKG non trouvé: " + pkg_path);
         return false;
@@ -228,15 +253,21 @@ bool TorrentManager::sharePackage(const std::string& pkg_path, const std::string
         LOG_ERROR("Erreur lors du partage du package: " + std::string(e.what()));
         return false;
     }
+#else
+    LOG_WARNING("Partage P2P non disponible (mode développement)");
+    return false;
+#endif
 }
 
 std::vector<DownloadInfo> TorrentManager::getDownloads() {
     std::vector<DownloadInfo> downloads;
     
+#ifndef NO_LIBTORRENT
     for (const auto& pair : s_torrents) {
         DownloadInfo info = getDownloadInfo(pair.first);
         downloads.push_back(info);
     }
+#endif
     
     return downloads;
 }
@@ -245,6 +276,7 @@ DownloadInfo TorrentManager::getDownloadInfo(const std::string& name) {
     DownloadInfo info;
     info.name = name;
     
+#ifndef NO_LIBTORRENT
     auto it = s_torrents.find(name);
     if (it == s_torrents.end()) {
         info.status = "Non trouvé";
@@ -275,6 +307,9 @@ DownloadInfo TorrentManager::getDownloadInfo(const std::string& name) {
         LOG_ERROR("Erreur lors de la récupération des infos: " + std::string(e.what()));
         info.status = "Erreur";
     }
+#else
+    info.status = "P2P non disponible";
+#endif
     
     return info;
 }
@@ -292,6 +327,7 @@ void TorrentManager::setErrorCallback(DownloadErrorCallback callback) {
 }
 
 void TorrentManager::setBandwidthLimits(int download_limit, int upload_limit) {
+#ifndef NO_LIBTORRENT
     if (!s_session) return;
     
     libtorrent::settings_pack settings;
@@ -301,9 +337,11 @@ void TorrentManager::setBandwidthLimits(int download_limit, int upload_limit) {
     
     LOG_INFO("Limites de bande passante définies - DL: " + std::to_string(download_limit) + 
              " UL: " + std::to_string(upload_limit));
+#endif
 }
 
 bool TorrentManager::setListenPort(int port) {
+#ifndef NO_LIBTORRENT
     if (!s_session) return false;
     
     try {
@@ -318,10 +356,14 @@ bool TorrentManager::setListenPort(int port) {
         LOG_ERROR("Erreur lors de la définition du port: " + std::string(e.what()));
         return false;
     }
+#else
+    return false;
+#endif
 }
 
 void TorrentManager::getGlobalStats(int64_t& total_download, int64_t& total_upload,
                                    int& download_rate, int& upload_rate) {
+#ifndef NO_LIBTORRENT
     if (!s_session) {
         total_download = total_upload = download_rate = upload_rate = 0;
         return;
@@ -332,9 +374,13 @@ void TorrentManager::getGlobalStats(int64_t& total_download, int64_t& total_uplo
     total_upload = stats.total_upload;
     download_rate = stats.download_rate;
     upload_rate = stats.upload_rate;
+#else
+    total_download = total_upload = download_rate = upload_rate = 0;
+#endif
 }
 
 bool TorrentManager::saveState(const std::string& state_file) {
+#ifndef NO_LIBTORRENT
     if (!s_session) return false;
     
     try {
@@ -356,9 +402,13 @@ bool TorrentManager::saveState(const std::string& state_file) {
         LOG_ERROR("Erreur lors de la sauvegarde de l'état: " + std::string(e.what()));
         return false;
     }
+#else
+    return false;
+#endif
 }
 
 bool TorrentManager::loadState(const std::string& state_file) {
+#ifndef NO_LIBTORRENT
     if (!s_session || !Utils::fileExists(state_file)) return false;
     
     try {
@@ -381,12 +431,14 @@ bool TorrentManager::loadState(const std::string& state_file) {
     } catch (const std::exception& e) {
         LOG_ERROR("Erreur lors du chargement de l'état: " + std::string(e.what()));
     }
+#endif
     
     return false;
 }
 
 // Méthodes privées
 void TorrentManager::processAlerts() {
+#ifndef NO_LIBTORRENT
     if (!s_session) return;
     
     std::vector<libtorrent::alert*> alerts;
@@ -425,9 +477,11 @@ void TorrentManager::processAlerts() {
             }
         }
     }
+#endif
 }
 
 std::string TorrentManager::getStatusString(int state) {
+#ifndef NO_LIBTORRENT
     switch (state) {
         case libtorrent::torrent_status::checking_files: return "Vérification";
         case libtorrent::torrent_status::downloading_metadata: return "Métadonnées";
@@ -438,9 +492,13 @@ std::string TorrentManager::getStatusString(int state) {
         case libtorrent::torrent_status::checking_resume_data: return "Reprise";
         default: return "Inconnu";
     }
+#else
+    return "Non disponible";
+#endif
 }
 
 void TorrentManager::createTorrentFile(const std::string& file_path, const std::string& output_path) {
+#ifndef NO_LIBTORRENT
     libtorrent::file_storage fs;
     libtorrent::add_files(fs, file_path);
     
@@ -458,4 +516,5 @@ void TorrentManager::createTorrentFile(const std::string& file_path, const std::
     // Sauvegarde du fichier torrent
     std::ofstream out(output_path, std::ios::binary);
     libtorrent::bencode(std::ostream_iterator<char>(out), torrent.generate());
+#endif
 }

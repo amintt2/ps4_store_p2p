@@ -69,10 +69,76 @@ if(PS4_BUILD)
     endif()
 else()
     # SDL2 système pour le développement
-    find_package(SDL2 REQUIRED)
+    # Try to find SDL2 using different methods
+    find_package(SDL2 QUIET)
+    if(NOT SDL2_FOUND)
+        # Try using PkgConfig
+        find_package(PkgConfig QUIET)
+        if(PkgConfig_FOUND)
+            pkg_check_modules(SDL2 QUIET sdl2)
+        endif()
+    endif()
+    
+    if(NOT SDL2_FOUND)
+        # Try manual search in common locations
+        find_path(SDL2_INCLUDE_DIR SDL.h
+            HINTS
+            $ENV{SDL2DIR}
+            PATH_SUFFIXES include/SDL2 include
+            PATHS
+            ~/Library/Frameworks
+            /Library/Frameworks
+            /usr/local/include/SDL2
+            /usr/include/SDL2
+            /sw/include/SDL2
+            /opt/local/include/SDL2
+            /opt/csw/include/SDL2
+            /opt/include/SDL2
+        )
+        
+        find_library(SDL2_LIBRARY
+            NAMES SDL2
+            HINTS
+            $ENV{SDL2DIR}
+            PATH_SUFFIXES lib64 lib lib/x64 lib/x86
+            PATHS
+            /sw
+            /opt/local
+            /opt/csw
+            /opt
+        )
+        
+        find_library(SDL2MAIN_LIBRARY
+            NAMES SDL2main
+            HINTS
+            $ENV{SDL2DIR}
+            PATH_SUFFIXES lib64 lib lib/x64 lib/x86
+            PATHS
+            /sw
+            /opt/local
+            /opt/csw
+            /opt
+        )
+        
+        if(SDL2_INCLUDE_DIR AND SDL2_LIBRARY)
+            set(SDL2_FOUND TRUE)
+            set(SDL2_INCLUDE_DIRS ${SDL2_INCLUDE_DIR})
+            set(SDL2_LIBRARIES ${SDL2_LIBRARY})
+            if(SDL2MAIN_LIBRARY)
+                list(APPEND SDL2_LIBRARIES ${SDL2MAIN_LIBRARY})
+            endif()
+            message(STATUS "Found SDL2: ${SDL2_LIBRARIES}")
+        endif()
+    endif()
+    
     if(SDL2_FOUND)
         include_directories(${SDL2_INCLUDE_DIRS})
-        set(SDL2_LIBRARIES ${SDL2_LIBRARIES})
+    else()
+        message(WARNING "SDL2 not found. Please install SDL2 development libraries.")
+        message(WARNING "On Windows: Download SDL2 development libraries from https://www.libsdl.org/")
+        message(WARNING "On Ubuntu/Debian: sudo apt-get install libsdl2-dev")
+        message(WARNING "On CentOS/RHEL: sudo yum install SDL2-devel")
+        message(WARNING "On macOS: brew install sdl2")
     endif()
 endif()
 
@@ -86,9 +152,20 @@ if(EXISTS "${IMGUI_DIR}")
         ${IMGUI_DIR}/imgui_draw.cpp
         ${IMGUI_DIR}/imgui_tables.cpp
         ${IMGUI_DIR}/imgui_widgets.cpp
-        ${IMGUI_DIR}/backends/imgui_impl_sdl2.cpp
-        ${IMGUI_DIR}/backends/imgui_impl_sdlrenderer2.cpp
     )
+    
+    # Only include SDL2 backends if SDL2 is available
+    if(SDL2_FOUND)
+        list(APPEND IMGUI_SOURCES
+            ${IMGUI_DIR}/backends/imgui_impl_sdl2.cpp
+            ${IMGUI_DIR}/backends/imgui_impl_sdlrenderer2.cpp
+        )
+        message(STATUS "Including ImGui SDL2 backends")
+    else()
+        message(STATUS "SDL2 not found, skipping ImGui SDL2 backends")
+        # For development without SDL2, we can add a simple console backend or disable UI
+        add_definitions(-DNO_SDL2_UI)
+    endif()
 else()
     message(WARNING "ImGui not found at ${IMGUI_DIR}")
     set(IMGUI_SOURCES "")
@@ -103,19 +180,14 @@ if(PS4_BUILD)
         link_directories("${LIBTORRENT_DIR}/build")
         set(LIBTORRENT_LIBRARIES torrent-rasterbar)
     else()
-        message(WARNING "libtorrent for PS4 not found at ${LIBTORRENT_DIR}")
+        message(WARNING "libtorrent not found at ${LIBTORRENT_DIR}")
+        set(LIBTORRENT_LIBRARIES "")
     endif()
 else()
-    # libtorrent système pour le développement
-    find_package(PkgConfig)
-    if(PkgConfig_FOUND)
-        pkg_check_modules(LIBTORRENT libtorrent-rasterbar)
-        if(LIBTORRENT_FOUND)
-            include_directories(${LIBTORRENT_INCLUDE_DIRS})
-            link_directories(${LIBTORRENT_LIBRARY_DIRS})
-            set(LIBTORRENT_LIBRARIES ${LIBTORRENT_LIBRARIES})
-        endif()
-    endif()
+    # Disable libtorrent for Windows development to avoid socket header conflicts
+    message(STATUS "libtorrent disabled for Windows development build")
+    set(LIBTORRENT_LIBRARIES "")
+    add_definitions(-DNO_LIBTORRENT)
 endif()
 
 # Sources du projet
@@ -139,10 +211,13 @@ set(HEADERS
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${IMGUI_SOURCES})
 
 # Liaison des bibliothèques
-target_link_libraries(${PROJECT_NAME}
-    ${SDL2_LIBRARIES}
-    ${LIBTORRENT_LIBRARIES}
-)
+if(SDL2_FOUND)
+    target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES})
+endif()
+
+if(LIBTORRENT_LIBRARIES)
+    target_link_libraries(${PROJECT_NAME} ${LIBTORRENT_LIBRARIES})
+endif()
 
 # Bibliothèques système spécifiques à PS4
 if(PS4_BUILD)

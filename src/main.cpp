@@ -13,23 +13,26 @@
 #include <string.h>
 #include <unistd.h>
 
-// Headers OpenOrbis
+// Headers OpenOrbis (PS4 uniquement)
+#ifdef __ORBIS__
 #include <orbis/libkernel.h>
 #include <orbis/Sysmodule.h>
 #include <orbis/SystemService.h>
 #include <orbis/UserService.h>
+#endif
 
-// Headers SDL2 pour l'interface
+// Headers SDL2 pour l'interface (conditionnels)
+#ifndef NO_SDL2_UI
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#endif
 
 // Headers du projet
 #include "ui/main_window.h"
 #include "p2p/torrent_manager.h"
 #include "pkg/pkg_manager.h"
-#include "utils/logger.h"
-#include "utils/config.h"
+#include "utils/utils.h"
 
 // Constantes
 #define SCREEN_WIDTH 1920
@@ -38,14 +41,17 @@
 #define APP_VERSION "1.0.0"
 
 // Variables globales
+#ifndef NO_SDL2_UI
 SDL_Window* g_window = nullptr;
 SDL_Renderer* g_renderer = nullptr;
+#endif
 bool g_running = true;
 
 /**
  * Initialise les modules système PS4
  */
 int initializePS4Systems() {
+#ifdef __ORBIS__
     int ret = 0;
     
     // Initialiser les modules système
@@ -69,12 +75,17 @@ int initializePS4Systems() {
     
     printf("Modules système PS4 initialisés avec succès\n");
     return 0;
+#else
+    printf("Mode développement - modules PS4 non requis\n");
+    return 0;
+#endif
 }
 
 /**
  * Initialise SDL2 et crée la fenêtre principale
  */
 int initializeSDL() {
+#ifndef NO_SDL2_UI
     // Initialiser SDL
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER) < 0) {
         printf("Erreur SDL_Init: %s\n", SDL_GetError());
@@ -121,12 +132,17 @@ int initializeSDL() {
     
     printf("SDL2 initialisé avec succès\n");
     return 0;
+#else
+    printf("Mode console - SDL2 non disponible\n");
+    return 0;
+#endif
 }
 
 /**
  * Gère les événements SDL
  */
 void handleEvents() {
+#ifndef NO_SDL2_UI
     SDL_Event event;
     
     while (SDL_PollEvent(&event)) {
@@ -155,12 +171,16 @@ void handleEvents() {
         // Transmettre l'événement à l'interface
         MainWindow::handleEvent(event);
     }
+#else
+    // Mode console - pas d'événements SDL à gérer
+#endif
 }
 
 /**
  * Boucle de rendu principal
  */
 void render() {
+#ifndef NO_SDL2_UI
     // Effacer l'écran
     SDL_SetRenderDrawColor(g_renderer, 0x1E, 0x1E, 0x2E, 0xFF);
     SDL_RenderClear(g_renderer);
@@ -170,6 +190,9 @@ void render() {
     
     // Présenter le rendu
     SDL_RenderPresent(g_renderer);
+#else
+    // Mode console - pas de rendu graphique
+#endif
 }
 
 /**
@@ -188,6 +211,7 @@ void cleanup() {
     PkgManager::cleanup();
     
     // Nettoyer SDL
+#ifndef NO_SDL2_UI
     if (g_renderer) {
         SDL_DestroyRenderer(g_renderer);
         g_renderer = nullptr;
@@ -201,6 +225,7 @@ void cleanup() {
     TTF_Quit();
     IMG_Quit();
     SDL_Quit();
+#endif
     
     printf("Nettoyage terminé\n");
 }
@@ -212,15 +237,12 @@ int main(int argc, char* argv[]) {
     printf("=== %s v%s ===\n", APP_NAME, APP_VERSION);
     printf("Démarrage de l'application...\n");
     
-    // Initialiser le logger
-    Logger::initialize("/data/ps4_store_p2p/logs/app.log");
-    Logger::info("Application démarrée");
+    // Initialiser les utilitaires
+    Utils::initialize();
+    LOG_INFO("Application démarrée");
     
-    // Charger la configuration
-    if (Config::load("/data/ps4_store_p2p/config.json") != 0) {
-        printf("Erreur lors du chargement de la configuration\n");
-        return -1;
-    }
+    // Note: Configuration sera chargée plus tard
+    printf("Configuration par défaut utilisée\n");
     
     // Initialiser les systèmes PS4
     if (initializePS4Systems() != 0) {
@@ -270,7 +292,7 @@ int main(int argc, char* argv[]) {
     }
     
     printf("Fermeture de l'application...\n");
-    Logger::info("Application fermée");
+    LOG_INFO("Application fermée");
     
     cleanup();
     return 0;

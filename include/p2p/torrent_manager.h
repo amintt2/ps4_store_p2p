@@ -15,12 +15,14 @@
 #include <memory>
 
 // Forward declarations pour libtorrent
+#ifndef NO_LIBTORRENT
 namespace libtorrent {
     class session;
     class torrent_handle;
     class torrent_status;
     class add_torrent_params;
 }
+#endif
 
 // Structure pour les informations de téléchargement
 struct DownloadInfo {
@@ -166,8 +168,10 @@ public:
     static bool loadState(const std::string& state_file);
 
 private:
+#ifndef NO_LIBTORRENT
     static std::unique_ptr<libtorrent::session> s_session;
     static std::map<std::string, libtorrent::torrent_handle> s_torrents;
+#endif
     static std::string s_download_path;
     static std::string s_state_file;
     
@@ -176,8 +180,10 @@ private:
     static DownloadErrorCallback s_error_callback;
     
     // Méthodes internes
+#ifndef NO_LIBTORRENT
     static void processAlerts();
     static void handleTorrentAlert(const libtorrent::torrent_status& status);
+#endif
     static std::string getStatusString(int state);
     static void createTorrentFile(const std::string& file_path, const std::string& output_path);
 };
