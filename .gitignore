@@ -15,6 +15,9 @@ out/
 *.a
 *.lib
 
+# OpenOrbis Toolchain cache
+toolchain-llvm-12.zip
+
 # Object files
 *.o
 *.obj

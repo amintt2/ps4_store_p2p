@@ -93,7 +93,7 @@ function Test-PS4Connection {
         [int]$Port
     )
     
-    Write-Info "Test de connexion vers $IPAddress:$Port..."
+    Write-Info "Test de connexion vers ${IPAddress}:${Port}..."
     
     try {
         $tcpClient = New-Object System.Net.Sockets.TcpClient
@@ -105,11 +105,11 @@ function Test-PS4Connection {
         
         if ($success -and $tcpClient.Connected) {
             $tcpClient.Close()
-            Write-Success "Connexion réussie vers $IPAddress:$Port"
+            Write-Success "Connexion réussie vers ${IPAddress}:${Port}"
             return $true
         } else {
             $tcpClient.Close()
-            Write-Error "Impossible de se connecter à $IPAddress:$Port"
+            Write-Error "Impossible de se connecter à ${IPAddress}:${Port}"
             return $false
         }
     } catch {
@@ -127,7 +127,7 @@ function New-FTPSession {
         [string]$Password
     )
     
-    $ftpUri = "ftp://$Server:$Port"
+    $ftpUri = "ftp://${Server}:${Port}"
     
     try {
         # Test de connexion FTP
@@ -141,7 +141,7 @@ function New-FTPSession {
         $response = $request.GetResponse()
         $response.Close()
         
-        Write-Success "Session FTP établie avec $Server:$Port"
+        Write-Success "Session FTP établie avec ${Server}:${Port}"
         return @{
             Server = $Server
             Port = $Port
@@ -254,7 +254,7 @@ function Send-PS4Command {
         [hashtable]$Parameters = @{}
     )
     
-    $baseUrl = "http://$PS4IP:12800"
+    $baseUrl = "http://${PS4IP}:12800"
     
     try {
         $uri = "$baseUrl/$Command"
@@ -322,7 +322,7 @@ function Show-PostInstallInstructions {
 function Main {
     Write-Info "=== Installation PS4 Store P2P ==="
     Write-Info "Package: $PkgPath"
-    Write-Info "PS4 IP: $PS4IP:$FTPPort"
+    Write-Info "PS4 IP: ${PS4IP}:${FTPPort}"
     Write-Info "Chemin d'installation: $InstallPath"
     
     # Vérifier que le fichier PKG existe

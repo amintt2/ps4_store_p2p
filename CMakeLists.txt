@@ -53,13 +53,17 @@ include_directories(
 )
 
 # Configuration SDL2
+message(STATUS "PS4_BUILD is set to: ${PS4_BUILD}")
 if(PS4_BUILD)
     # SDL2 compilé pour PS4
-    set(SDL2_DIR "${LIBS_DIR}/SDL2")
+    set(SDL2_DIR "${LIBS_DIR}/SDL2-2.28.5")
+    message(STATUS "Using PS4 SDL2 at: ${SDL2_DIR}")
     if(EXISTS "${SDL2_DIR}")
         include_directories("${SDL2_DIR}/include")
-        link_directories("${SDL2_DIR}/build")
-        set(SDL2_LIBRARIES SDL2 SDL2main)
+        # Use SDL2 cmake config files
+        set(CMAKE_PREFIX_PATH "${SDL2_DIR}/cmake" ${CMAKE_PREFIX_PATH})
+        find_package(SDL2 REQUIRED CONFIG PATHS "${SDL2_DIR}/cmake" NO_DEFAULT_PATH)
+        set(SDL2_LIBRARIES SDL2::SDL2 SDL2::SDL2main)
     else()
         message(WARNING "SDL2 for PS4 not found at ${SDL2_DIR}")
     endif()
@@ -73,7 +77,7 @@ else()
 endif()
 
 # Configuration ImGui
-set(IMGUI_DIR "${LIBS_DIR}/imgui")
+set(IMGUI_DIR "${LIBS_DIR}/imgui-1.90.1")
 if(EXISTS "${IMGUI_DIR}")
     include_directories("${IMGUI_DIR}")
     set(IMGUI_SOURCES
