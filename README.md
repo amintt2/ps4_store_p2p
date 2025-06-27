@@ -21,10 +21,9 @@ Un store décentralisé P2P pour PS4 jailbreakée, permettant de parcourir, tél
 
 ### 🔧 Fonctionnalités Techniques
 - **Architecture modulaire** (UI, P2P, PKG, Utils)
-- **Support multi-plateforme** (compilation native pour tests)
+- **Optimisé pour PS4** uniquement
 - **Configuration flexible** via fichiers INI
 - **Logging avancé** pour le débogage
-- **Tests unitaires** complets
 - **Documentation technique** détaillée
 
 ## 📋 Prérequis

@@ -9,7 +9,7 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 
 # Variables de configuration
 set(PROJECT_NAME "ps4_store_p2p")
-set(OPENORBIS_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/OpenOrbis-PS4-Toolchain" CACHE PATH "Path to OpenOrbis Toolchain")
+set(OPENORBIS_ROOT "/opt/OpenOrbis" CACHE PATH "Path to OpenOrbis Toolchain")
 set(LIBS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs")
 
 # PS4 Build Only - No cross-platform support
