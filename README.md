@@ -44,28 +44,21 @@ Un store décentralisé P2P pour PS4 jailbreakée, permettant de parcourir, tél
 
 ## 🛠️ Installation
 
-### Installation Rapide (Windows)
-
-```powershell
-# Cloner le projet
-git clone https://github.com/amintt2/ps4_store_p2p.git
-
-cd ps4_store_p2p
-
-# Installation automatique des dépendances et compilation
-.\install.ps1 all
-```
-
-### Installation Rapide (Linux/macOS)
+### Installation Rapide (Linux/Codespace)
 
 ```bash
 # Cloner le projet
-git clone https://github.com/votre-username/ps4_store_p2p.git
+git clone https://github.com/amintt2/ps4_store_p2p.git
 cd ps4_store_p2p
 
-# Installation automatique des dépendances et compilation
-chmod +x install.sh
-./install.sh all
+# Extraire le toolchain OpenOrbis
+chmod +x extract_openorbis.sh
+./extract_openorbis.sh
+
+# Compiler le projet
+mkdir build && cd build
+cmake ..
+make
 ```
 
 ### Installation Manuelle
