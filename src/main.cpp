@@ -276,7 +276,7 @@ int main(int argc, char* argv[]) {
     }
     
     printf("Application initialisée avec succès\n");
-    Logger::info("Application initialisée avec succès");
+    LOG_INFO("Application initialisée avec succès");
     
     // Boucle principale
     while (g_running) {
